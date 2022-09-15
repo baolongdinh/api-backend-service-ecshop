@@ -1,5 +1,5 @@
 const { AuditLog } = require("../model/auditLogModel")
-
+const errLogger = require("./auditlog/errLogger")
 
 const auditLogController = {
     GetAllAuditLog : async(req,res) =>{
@@ -8,7 +8,12 @@ const auditLogController = {
             const auditlog = await AuditLog.find().populate('User_ID')
             res.status(200).json(auditlog);
         } catch (err) {
-            res.status(400).json(err.message);
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
 
         }
     }

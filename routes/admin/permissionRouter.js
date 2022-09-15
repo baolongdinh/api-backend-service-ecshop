@@ -4,7 +4,7 @@ const { UserAccount } = require("../../model/userModel");
 const { Permission } = require("../../model/userModel");
 const permissionController = require ( "../../controllers/permissionController");
 const { ObjectId } = require("mongodb");
-
+const lokilogs = require("../../controllers/auditlog/lokilogs")
 
 
 const endpoint = '/permissions'

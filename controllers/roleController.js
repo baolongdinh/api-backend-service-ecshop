@@ -1,7 +1,7 @@
 const { Userrole } = require("../model/userModel");
 const { AuditLog } = require("../model/auditLogModel");
 const helperFunc = require("../controllers/helperFunc")
-
+const errLogger = require("./auditlog/errLogger")
 
 const RoleController = {
   addRole: async (req, res, idUser) => {
@@ -25,7 +25,12 @@ const RoleController = {
         
       });
     } catch (err) {
-      res.status(400).json(err.message);
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
   getAllRole: async (req, res) => {
@@ -37,10 +42,12 @@ const RoleController = {
         helperFunc.status(res,true,userrole,null);
       }
     } catch (err) {
-      res.status(500).json({
-        success: false,
-        message: "did not found any userrole" + err.message,
-      });
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
 
@@ -53,10 +60,12 @@ const RoleController = {
         helperFunc.status(res,true,userrole,null);
       }
     } catch (err) {
-      res.status(500).json({
-        success: false,
-        message: "did not found any userrole" + err.message,
-      });
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
 
@@ -90,11 +99,12 @@ const RoleController = {
 
       helperFunc.status(res,true,role,"update success")
     } catch (err) {
-      res.status(404).json({
-        success: false,
-        message: "update role failed",
-        error: err.message,
-      });
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
 
@@ -124,7 +134,12 @@ const RoleController = {
         });
       }
     } catch (err) {
-      res.status(402).json(err.message);
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
 };

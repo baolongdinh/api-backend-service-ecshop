@@ -13,7 +13,6 @@ const { AuditLog } = require("../model/auditLogModel");
 const helperFunc = require("./helperFunc");
 
 
-
 function isImage(url) {
   return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
 }
@@ -56,29 +55,27 @@ const userController = {
       
       const userCount = await UserAccount.find().count();
     
+
       res.status(200).json({
         "success" : true,
         "data" : user,
         "userCount" : userCount
       })
-      
-      
 
     } catch (err) {
-      
-        
-        res.status(500).json({
+      errLogger(err,req,res,()=>{
+        res.status(401).json({
           success: false,
-          message: "did not found any user",
+          message: err.message,
         });
+      })
 
-      
     }
   },
 
   getUserById: async (req, res, id) => {
     try {
-      const user = await UserAccount.findById(id).populate("role");
+      //const user = await UserAccount.findById(id).populate("role");
 
       const { password, ...others } = user._doc;
       res.status(200).json({
@@ -86,12 +83,17 @@ const userController = {
         data: { ...others },
       });
 
-      //res.status(200).json(user)
+      
     } catch (err) {
-      res.status(500).json({
-        success: false,
-        message: "did not found any user",
-      });
+
+      errLogger(err,req,res,()=>{
+        res.status(500).json({
+          success: false,
+          message: "did not found any user",
+        });
+      })
+
+      
     }
   },
 
@@ -109,7 +111,13 @@ const userController = {
         });
       }
     } catch (err) {
-      res.status(500).json(err.message);
+
+      errLogger(err,req,res,()=>{
+        res.status(500).json({
+          success: false,
+          message: err.message,
+        });
+      })
     }
   },
   UpdateUserByID: async (req, res, id) => {
@@ -158,11 +166,17 @@ const userController = {
       })
     
     } catch (err) {
-      res.status(404).json({
-        success: false,
-        message: "update user failed",
-        error: err.message,
-      });
+
+      errLogger(err,req,res,()=>{
+        res.status(404).json({
+          success: false,
+          message: "update user failed",
+          error: err.message,
+        });
+      })
+
+
+      
     }
   },
 
@@ -213,7 +227,20 @@ const userController = {
         }
       });
     } catch (err) {
-      res.status(400).json(err.message);
+
+
+
+      errLogger(err,req,res,()=>{
+        res.status(404).json({
+          success: false,
+          message: "update user failed",
+          error: err.message,
+        });
+      })
+
+      
+
+     
     }
   },
 
@@ -295,7 +322,16 @@ const userController = {
         }
       });
     } catch (err) {
-      res.status(400).json(err.message);
+
+      errLogger(err,req,res,()=>{
+        res.status(404).json({
+          success: false,
+          message: "add user failed",
+          error: err.message,
+        });
+      })
+
+      
     }
   },
 
@@ -321,7 +357,16 @@ const userController = {
         res.render("verifyAccountCompleted");
       }
     } catch (err) {
-      res.status(400).json(err.message);
+
+      errLogger(err,req,res,()=>{
+        res.status(404).json({
+          success: false,
+          message: "active user failed",
+          error: err.message,
+        });
+      })
+
+      
     }
   },
 
@@ -460,11 +505,16 @@ const userController = {
 
       res.redirect("/");
     } catch (err) {
-      res.status(404).json({
-        success: false,
-        message: "update user failed",
-        error: err.message,
-      });
+
+      errLogger(err,req,res,()=>{
+        res.status(404).json({
+          success: false,
+          message: "update user by token failed",
+          error: err.message,
+        });
+      })
+
+     
     }
   },
   ChangeUserPassword: async (req, res, id) => {
@@ -497,11 +547,13 @@ const userController = {
         }
       }
     } catch (err) {
-      res.status(404).json({
-        success: false,
-        message: "update user failed",
-        error: err.message,
-      });
+      errLogger(err,req,res,()=>{
+        res.status(404).json({
+          success: false,
+          message: "update user password failed",
+          error: err.message,
+        });
+      })
     }
   },
   activeOrBlockUserAccountByID: async (res, id) => {
@@ -527,11 +579,15 @@ const userController = {
         data: user,
       });
     } catch (err) {
-      res.status(404).json({
-        success: false,
-        message: "block or unblock user failed",
-        error: err.message,
-      });
+
+      errLogger(err,req,res,()=>{
+        res.status(404).json({
+          success: false,
+          message: "block or unblock user failed",
+          error: err.message,
+        });
+      })
+      
     }
   },
 };

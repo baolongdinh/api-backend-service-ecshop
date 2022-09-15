@@ -6,7 +6,7 @@ const logError = (err, req, res, next) => {
     let status = res.statusCode
  
     const logger = getLogger
-    logger.error({ message: `method=${method} url=${url} status=${status} error=${err.stack}`, labels: { 'origin': 'api' } })
+    logger.error({ message: `method=${method} url=${url} status=${status} level=error error=${err.stack}`, labels: { 'origin': 'api' } })
 
     return next();
 }

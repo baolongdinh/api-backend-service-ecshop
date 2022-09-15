@@ -2,7 +2,7 @@ const { Product } = require("../model/productModel");
 const { AuditLog } = require("../model/auditLogModel");
 const { uploadAvatar } = require("./helpers");
 const helperFunc = require("./helperFunc");
-
+const errLogger = require("./auditlog/errLogger")
 
 const productController = {
   addProduct: async (req, res, idUser) => {
@@ -43,7 +43,12 @@ const productController = {
         }
       });
     } catch (err) {
-      res.status(400).json(err.message);
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
   getAllProduct: async (req, res) => {
@@ -75,9 +80,14 @@ const productController = {
         "productCount" : productCount
       })
 
-      //helperFunc.status(res, true, product, null);
+      
     } catch (err) {
-      res.status(400).json(err.message);
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
 
@@ -86,7 +96,12 @@ const productController = {
       const product = await Product.findById(id);
       helperFunc.status(res, true, product, null);
     } catch (err) {
-      res.status(400).json(err.message);
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
 
@@ -102,10 +117,12 @@ const productController = {
         });
       }
     } catch (err) {
-      res.status(500).json({
-        success: false,
-        message: err.message,
-      });
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
   updateProduct: async (req, res, id, idUser) => {
@@ -150,7 +167,12 @@ const productController = {
         helperFunc.status(res,true,product,null)
       });
     } catch (err) {
-      res.status(400).json(err.message);
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
   deleteProduct: async (req, res, id, idUser) => {
@@ -178,7 +200,12 @@ const productController = {
         });
       }
     } catch (err) {
-      res.status(400).json(err.message);
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
 };

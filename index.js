@@ -52,6 +52,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(flash()); // use connect-flash for flash messages stored in session
 
 
+
 //Loki
 app.use(responseTime(resTime))
 app.use(errLogger)

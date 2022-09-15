@@ -5,7 +5,7 @@ const { UserAccount } = require("../../model/userModel");
 const { Permission } = require("../../model/userModel");
 const userController = require("../../controllers/userController");
 const auditlogController = require("../../controllers/auditLogController");
-
+const lokilogs = require("../../controllers/auditlog/lokilogs")
 const endpoint = '/auditlog'
 
 //Get All AUDITLOG (auth: ADMIN)

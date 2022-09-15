@@ -6,6 +6,8 @@ const { Permission } = require("../../model/userModel");
 const userController = require("../../controllers/userController");
 
 
+
+
 const endpoint = '/users'
 
 //Get All USER (auth: ADMIN)

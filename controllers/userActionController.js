@@ -2,7 +2,7 @@
 const { Order, OrderItems } = require("../model/orderModel");
 const { Product } = require("../model/productModel");
 const {AuditLog} = require("../model/auditLogModel")
-
+const errLogger = require("./auditlog/errLogger")
 
 const userActionController = {
 
@@ -61,11 +61,12 @@ const userActionController = {
 
 
         } catch (err) {
-            res.status(500).json({
-                "success": false,
-                "message": "buying product getting error",
-                "err mess": err.message
-            });
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
 
         }
     },
@@ -96,10 +97,12 @@ const userActionController = {
 
 
         } catch (err) {
-            res.status(500).json({
-                "success": false,
-                "message": "buying product getting error" + err.message
-            });
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
 
         }
     },
@@ -120,10 +123,12 @@ const userActionController = {
 
 
         } catch (err) {
-            res.status(500).json({
-                "success": false,
-                "message": err.message
-            });
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
 
         }
     },
@@ -171,10 +176,12 @@ const userActionController = {
             }
 
         } catch (err) {
-            res.status(500).json({
-                "success": false,
-                "message": err.message
-            });
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
 
         }
     },

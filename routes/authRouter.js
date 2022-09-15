@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const userController = require("../controllers/userController");
 const userAuthController = require("../controllers/userAuthController")
 
+
 authRouter.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
 
 authRouter.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));

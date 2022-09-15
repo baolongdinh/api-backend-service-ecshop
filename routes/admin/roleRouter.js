@@ -3,7 +3,7 @@ const middlewareController = require("../../controllers/middlewareController");
 const { UserAccount } = require("../../model/userModel");
 const { Permission } = require("../../model/userModel");
 const roleController = require ( "../../controllers/roleController");
-
+const lokilogs = require("../../controllers/auditlog/lokilogs")
 
 
 const endpoint = '/roles'
