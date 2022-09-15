@@ -123,7 +123,6 @@ const userController = {
   UpdateUserByID: async (req, res, id) => {
     try {
       uploadAvatar(req, res, async (err) => {
-        console.log("bodyy", req.body)
         const user = await UserAccount.findById(id);
         if (err) {
           helperFunc.status(res, false, null, "can not upload image");

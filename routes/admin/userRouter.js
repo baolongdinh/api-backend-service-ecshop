@@ -89,7 +89,7 @@ userRouter.post("/", async (req, res) => {
 
 
 //UPDATE USER(auth: ADMIN)
-userRouter.post("/:id", async (req, res) => {
+userRouter.put("/:id", async (req, res) => {
 
     const userToken = await middlewareController.verifyToken(req, res)
     

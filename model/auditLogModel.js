@@ -20,16 +20,16 @@ const  auditLogSchema= new mongoose.Schema({
         method : {
             type : String,
         },
+        statusCode: { 
+            type: String
+        },
         oldItem :{
             type: Schema.Types.Mixed,
         },
         newItem :{
             type: Schema.Types.Mixed,
         },
-        createAt : {
-            type : Date,
-            default: Date.now()
-          }
+        
         
 });
 

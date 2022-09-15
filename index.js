@@ -13,7 +13,7 @@ const myRouter = require("./routes/index");
 const viewRouter = require("./routes/viewRouter");
 var responseTime = require('response-time')
 const cookieParser = require('cookie-parser');
-
+const auditLogMiddleware = require("./controllers/auditlog/auditlogMiddleware")
 const errLogger = require("./controllers/auditlog/errLogger")
 const resTime = require("./controllers/auditlog/resTimeLogger")
 mongoose.plugin(require('./controllers/auditlog/plugin'))
@@ -51,6 +51,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(passport.session()); // persistent login sessions
 // app.use(flash()); // use connect-flash for flash messages stored in session
 
+app.use(auditLogMiddleware)
 
 
 //Loki
