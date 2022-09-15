@@ -3,7 +3,7 @@ const multer = require('multer');
 const uuid = require('uuid').v4;
 const { UserAccount } = require("../model/userModel");
 const {AuditLog} = require("../model/auditLogModel")
-
+const errLogger = require("./auditlog/errLogger")
 
 
 

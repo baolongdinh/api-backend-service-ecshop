@@ -1,7 +1,7 @@
 
 const { Order, OrderItems } = require("../model/orderModel");
 const helperFunc = require("./helperFunc");
-
+const errLogger = require("./auditlog/errLogger")
 
 const orderItemsController = { 
     
@@ -16,7 +16,12 @@ const orderItemsController = {
             }
 
         } catch (err) {
-            res.status(400).json(err.message);
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
         }
     },
     getAllOrderItems: async (req, res) => {
@@ -29,7 +34,12 @@ const orderItemsController = {
             }
 
         } catch (err) {
-            res.status(400).json(err.message);
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
         }
     },
 
@@ -44,7 +54,12 @@ const orderItemsController = {
             res.status(200).json(orderItem);
 
         } catch (err) {
-            res.status(400).json(err.message);
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
         }
     },
     UpdateOrderItemsByID: async (req, res, id, idUser) => {
@@ -67,7 +82,12 @@ const orderItemsController = {
             res.status(200).json(orderItem);
 
         } catch (err) {
-            res.status(400).json(err.message);
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
         }
     },
 
@@ -100,7 +120,12 @@ const orderItemsController = {
                 "success" : true
             });
         } catch (err) {
-            res.status(400).json(err.message);
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
         }
     },
 

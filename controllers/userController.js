@@ -75,7 +75,7 @@ const userController = {
 
   getUserById: async (req, res, id) => {
     try {
-      //const user = await UserAccount.findById(id).populate("role");
+      const user = await UserAccount.findById(id).populate("role");
 
       const { password, ...others } = user._doc;
       res.status(200).json({

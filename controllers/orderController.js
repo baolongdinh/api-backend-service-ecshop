@@ -1,6 +1,6 @@
 const { Order } = require("../model/orderModel");
 const helperFunc = require("./helperFunc");
-
+const errLogger = require("./auditlog/errLogger")
 
 const orderController = {
   getAllOrder_User: async (req, res, id) => {
@@ -16,7 +16,12 @@ const orderController = {
         lokilogs.error({message : err.message, labels: {'dateTime' : new Date(), 'method': req.method, 'endpoint': '/users' } })
       }
     } catch (err) {
-      res.status(400).json(err.message);
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
 
@@ -53,10 +58,20 @@ const orderController = {
           orderCount: orderCount,
         });
       } catch (err) {
-        res.status(400).json(err.message);
+        errLogger(err,req,res,()=>{
+          res.status(402).json({
+              "success": false,
+              "message": err.message
+          });
+        })
       }
     } catch (err) {
-      res.status(400).json(err.message);
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
 
@@ -70,7 +85,12 @@ const orderController = {
       await order.save();
       res.status(200).json(order);
     } catch (err) {
-      res.status(400).json(err.message);
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
   UpdateOrder: async (req, res, id, idUser) => {
@@ -91,7 +111,12 @@ const orderController = {
       await order.save();
       res.status(200).json(order);
     } catch (err) {
-      res.status(400).json(err.message);
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
   deleteOrder: async (req, res, id, idUser) => {
@@ -105,7 +130,12 @@ const orderController = {
         });
       }
     } catch (err) {
-      res.status(400).json(err.message);
+      errLogger(err,req,res,()=>{
+        res.status(402).json({
+            "success": false,
+            "message": err.message
+        });
+      })
     }
   },
 };

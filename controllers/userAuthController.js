@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const EmailSender = require("../controllers/email/emailSender");
 const {AuditLog} = require("../model/auditLogModel")
 const helperFunc = require("./helperFunc")
-
+const errLogger = require("./auditlog/errLogger")
 
 
 
@@ -74,11 +74,16 @@ const userAuthController = {
             }
 
         } catch (err) {
-            console.log("err ", err);
-            res.status(400).json({
-                "success": false,
-                "message": err.message
-            });
+
+            errLogger(err,req,res,()=>{
+                res.status(400).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
+
+           
+            
 
         }
     },
@@ -111,7 +116,14 @@ const userAuthController = {
 
             }
         } catch (err) {
-            res.status(400).json(err.message);
+            
+            errLogger(err,req,res,()=>{
+                res.status(400).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
+
 
         }
     },
@@ -152,7 +164,14 @@ const userAuthController = {
             }
 
         } catch (err) {
-            res.status(400).json(err.message);
+            
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
+
 
         }
     },

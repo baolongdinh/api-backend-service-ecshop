@@ -1,5 +1,6 @@
 const FacebookStrategy = require("passport-facebook").Strategy;
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+const errLogger = require("./auditlog/errLogger")
 
 // load  user model
 const { AuthAccount, Userrole } = require("../model/userModel");

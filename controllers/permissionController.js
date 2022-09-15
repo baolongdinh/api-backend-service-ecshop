@@ -2,6 +2,7 @@ const { Permission } = require("../model/userModel");
 const {AuditLog} = require("../model/auditLogModel");
 const helperFunc = require("./helperFunc");
 const { findById } = require("../model/tokenModel");
+const errLogger = require("./auditlog/errLogger")
 
 const permissionController = {
 
@@ -25,7 +26,12 @@ const permissionController = {
             await permission.save().then(auditLog.save());
             res.status(200).json(permission);
         } catch (err) {
-            res.status(400).json(err.message);
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
         }
     },
 
@@ -79,11 +85,12 @@ const permissionController = {
                 "data": permission
             });
         } catch (err) {
-            res.status(404).json({
-                "success": false,
-                "message": "update role failed",
-                "error": err.message
-            });
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
         }
     },
     getAllPermission: async (req, res) => {
@@ -102,10 +109,12 @@ const permissionController = {
                 "data": permission
             });
         } catch (err) {
-            res.status(500).json({
-                "success": false,
-                "message": "did not found any userrole" + err.message
-            });
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
 
         }
     },
@@ -138,7 +147,12 @@ const permissionController = {
                 });
             }
         } catch (err) {
-            res.status(402).json(err.message);
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
 
         }
     },
@@ -178,7 +192,12 @@ const permissionController = {
 
 
         } catch (err) {
-            res.status(402).json(err.message);
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
 
         }
     },
@@ -194,10 +213,12 @@ const permissionController = {
 
             helperFunc.status(res,true,permission,null)
         } catch (err) {
-            res.status(500).json({
-                "success": false,
-                "message": "did not found any permission" + err.message
-            });
+            errLogger(err,req,res,()=>{
+                res.status(402).json({
+                    "success": false,
+                    "message": err.message
+                });
+              })
 
         }
     },
