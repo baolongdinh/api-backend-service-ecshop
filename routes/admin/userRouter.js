@@ -16,7 +16,7 @@ userRouter.get("/:page/:limit/:sort", async (req, res) => {
     const userToken = await middlewareController.verifyToken(req, res)
     
     if (!userToken) {
-        return res.status(401).json({
+        return res.status(403).json({
             "success": false,
             "message": "authentication fail"
         });

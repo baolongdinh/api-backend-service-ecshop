@@ -24,7 +24,6 @@ const productController = {
             product.image = `/static/images/avatar/${req.file.filename}`;
           }
 
-          console.log("product$##", product);
 
           await product.save().then(() => {
             const auditLog = new AuditLog();
@@ -37,7 +36,6 @@ const productController = {
             auditLog.newItem = product;
             auditLog.url = fullUrl;
             auditLog.save();
-            console.log("save product successfully");
             helperFunc.status(res, true, product, null);
           });
         }
@@ -134,7 +132,7 @@ const productController = {
         const product = await Product.findById(id);
         const oldProduct = await Product.findById(id);
         if (!product) {
-          return res.status(500).json({
+          return res.status(403).json({
             success: false,
             message: "did not found product",
           });
@@ -192,7 +190,10 @@ const productController = {
           auditLog.url = fullUrl;
           auditLog.save();
         });
-        res.status(200).json("DELETE PRODUCT SUSCESS");
+        res.status(200).json({
+          "success": false,
+          "message":  "DELETE PRODUCT SUCCESS"
+        });
       } else {
         res.status(200).json({
           success: false,
@@ -202,8 +203,8 @@ const productController = {
     } catch (err) {
       errLogger(err,req,res,()=>{
         res.status(402).json({
-            "success": false,
-            "message": err.message
+            success : false,
+            message : err.message
         });
       })
     }

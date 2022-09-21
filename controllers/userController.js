@@ -99,17 +99,35 @@ const userController = {
 
   deleteUserByID: async (req, res, id, idUser) => {
     try {
-      if (await UserAccount.findByIdAndDelete(id)) {
+      
+      const user = await UserAccount.findById(id)
+      
+      if(user){
+        await UserAccount.findByIdAndDelete(id)
         res.status(200).json({
-          "success" : true,
-          "message" : "delete success"
-        });
-      } else {
-        res.status(200).json({
-          success: false,
-          message: "did not found user",
-        });
+              "success" : true,
+              "message" : "delete success"
+            })
+      }else{
+        res.status(404).json({
+              success: false,
+              message: "did not found user",
+            });
       }
+
+
+
+      // if (await UserAccount.findByIdAndDelete(id)) {
+      //   res.status(200).json({
+      //     "success" : true,
+      //     "message" : "delete success"
+      //   });
+      // } else {
+      //   res.status(404).json({
+      //     success: false,
+      //     message: "did not found user",
+      //   });
+      // }
     } catch (err) {
 
       errLogger(err,req,res,()=>{
@@ -127,7 +145,7 @@ const userController = {
         if (err) {
           helperFunc.status(res, false, null, "can not upload image");
         }else if (!user) {
-          return res.status(500).json({
+          return res.status(402).json({
             success: false,
             message: "did not found user",
           });
@@ -183,9 +201,7 @@ const userController = {
     try {
       uploadAvatar(req, res, async (err) => {
         const user = await UserAccount.findOne({ email: req.body.email });
-        console.log(req.body);
-        console.log("####check Pass : " + checkPass(req));
-        console.log("file", req.file)
+
         if (err) {
           helperFunc.status(res, false, null, "can not upload image");
         } else if (user) {
@@ -247,10 +263,6 @@ const userController = {
     try {
       uploadAvatar(req, res, async (err) => {
         const user = await UserAccount.findOne({ email: req.body.email });
-        console.log(req.body);
-        console.log("####check Pass : " + checkPass(req));
-        console.log("##file", req.file)
-        console.log(err, user)
         if (err) {
           helperFunc.status(res, false, null, "can not upload image");
         } else if (user) {
@@ -260,11 +272,11 @@ const userController = {
         } else if (!checkPass(req)) {
           helperFunc.status(res, false,null,"password and re-enter password did not match" );
         } else {
-          console.log("check")
+   
           const salt = await bcrypt.genSalt(10);
           const hashPass = await bcrypt.hash(req.body.password, salt);
 
-          console.log(hashPass)
+       
 
           const newUser = await new UserAccount({
             email: req.body.email,
@@ -274,7 +286,7 @@ const userController = {
             dob: req.body.dob,
             role: req.body.role,
           });
-          console.log("newUser", newUser)
+         
 
           if (req.file) {
             newUser.avatar = `/static/images/avatar/${req.file.filename}`;
@@ -284,7 +296,7 @@ const userController = {
             }
           }
 
-          console.log("newUser", newUser)
+          
 
           const tokenActivate = jwt.sign(
             {

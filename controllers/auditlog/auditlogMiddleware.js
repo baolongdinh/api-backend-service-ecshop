@@ -14,10 +14,7 @@ function check_end_point_url(url, endpoint){
 }
 const auditLogMiddleware = async (req, res, next) => {
 
-    
-    
     let userToken = await middlewareController.verifyToken(req, res)
-
 
     let method = req.method
 
@@ -31,17 +28,17 @@ const auditLogMiddleware = async (req, res, next) => {
 
     let check_method = 0 
 
+    
+
     if(method == "GET"){
         //do not thing
     }else if(method=="POST"){
-         console.log(req.body)
          check_method = 1
          newItem = req.body
     }else if(method == "PUT"){
-        console.log("aaaa", req.body)
+        
         check_method = 1
         let id = req.params.id
-        console.log(id)
         if(check_end_point_url(url, "/users")){
             oldItem = await UserAccount.findById(id).populate("role")
         }else if(check_end_point_url(url, "/products")){
@@ -52,6 +49,7 @@ const auditLogMiddleware = async (req, res, next) => {
              oldItem = await OrderItems.findById(id)
         }
         newItem = req.body
+       
         
     }else if(method=="DELETE"){
         check_method = 1
