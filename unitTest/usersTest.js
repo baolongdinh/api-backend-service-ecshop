@@ -52,7 +52,6 @@ describe("/POST users", () => {
             active: true,
             avatar: '/static/images/avatar/avt-image-edabcaf2-8af3-441b-83e0-a02dc1522232.jpg',
         };
-
         chai
           .request(server)
           .post("/api/admin/users")

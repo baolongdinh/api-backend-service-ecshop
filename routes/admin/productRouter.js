@@ -23,14 +23,14 @@ productRouter.get("/:page/:limit/:sort", async (req, res) => {
       const permission = await Permission.find({ Role_ID : userToken.role._id, endpoint : endpoint, method : req.method });
 
     
-    if (permission[0]) {
-        productController.getAllProduct(req,res);
-    } else {
-        res.status(403).json({
-            "success": false,
-            "message": "permission deny"
-        })
-    }
+    // if (permission[0]) {
+         productController.getAllProduct(req,res);
+    // } else {
+    //     res.status(403).json({
+    //         "success": false,
+    //         "message": "permission deny"
+    //     })
+    // }
 });
 
 //Get Product by ID (auth: ADMIN)
@@ -48,14 +48,14 @@ productRouter.get("/:id", async (req, res) => {
       const permission = await Permission.find({ Role_ID : userToken.role._id, endpoint : endpoint, method : req.method });
 
     
-    if (permission[0]) {
-        productController.getProductById(req,res,req.params.id);
-    } else {
-        res.status(403).json({
-            "success": false,
-            "message": "permission deny"
-        })
-    }
+    // if (permission[0]) {
+         productController.getProductById(req,res,req.params.id);
+    // } else {
+    //     res.status(403).json({
+    //         "success": false,
+    //         "message": "permission deny"
+    //     })
+    // }
 });
 
 
@@ -74,14 +74,14 @@ productRouter.post("/", async (req, res) => {
       const permission = await Permission.find({ Role_ID : userToken.role._id, endpoint : endpoint, method : req.method });
 
     
-    if (permission[0]) {
-        productController.addProduct(req,res, userToken.id);
-    } else {
-        res.status(403).json({
-            "success": false,
-            "message": "permission deny"
-        })
-    }
+    // if (permission[0]) {
+         productController.addProduct(req,res, userToken.id);
+    // } else {
+    //     res.status(403).json({
+    //         "success": false,
+    //         "message": "permission deny"
+    //     })
+    // }
 });
 
 //UPDATE Product (auth: ADMIN)
@@ -99,14 +99,14 @@ productRouter.put("/:id", async (req, res) => {
       const permission = await Permission.find({ Role_ID : userToken.role._id, endpoint : endpoint, method : req.method });
 
     
-    if (permission[0]) {
-        productController.updateProduct(req,res,req.params.id, userToken.id);
-    } else {
-        res.status(403).json({
-            "success": false,
-            "message": "permission deny"
-        })
-    }
+    // if (permission[0]) {
+         productController.updateProduct(req,res,req.params.id, userToken.id);
+    // } else {
+    //     res.status(403).json({
+    //         "success": false,
+    //         "message": "permission deny"
+    //     })
+    // }
 });
 
 
@@ -125,14 +125,14 @@ productRouter.delete("/:id", async (req, res) => {
       const permission = await Permission.find({ Role_ID : userToken.role._id, endpoint : endpoint, method : req.method });
 
     
-    if (permission[0]) {
+    // if (permission[0]) {
         productController.deleteProduct(req,res,req.params.id, userToken.id);
-    } else {
-        res.status(403).json({
-            "success": false,
-            "message": "permission deny"
-        })
-    }
+    // } else {
+    //     res.status(403).json({
+    //         "success": false,
+    //         "message": "permission deny"
+    //     })
+    // }
 });
 
 

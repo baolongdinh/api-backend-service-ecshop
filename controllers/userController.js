@@ -11,7 +11,7 @@ const { uploadAvatar } = require("./helpers");
 const errLogger = require("./auditlog/errLogger")
 const { AuditLog } = require("../model/auditLogModel");
 const helperFunc = require("./helperFunc");
-
+const messageQueue = require("../services/messagingQueue")
 
 function isImage(url) {
   return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
@@ -97,13 +97,16 @@ const userController = {
     }
   },
 
-  deleteUserByID: async (req, res, id, idUser) => {
+  deleteUserByID: async (req, res, id) => {
     try {
       
       const user = await UserAccount.findById(id)
       
       if(user){
         await UserAccount.findByIdAndDelete(id)
+        const message = `delete user ${user.name} successfully`
+        messageQueue('admin_notify', message)
+
         res.status(200).json({
               "success" : true,
               "message" : "delete success"
@@ -172,8 +175,12 @@ const userController = {
         if (req.file) {
           user.avatar = `/static/images/avatar/${req.file.filename}`;
         }
-  
+        
+        const message = `update user ${user.name} successfully`
+        messageQueue('admin_notify', message)
+
         await user.save().then(console.log(user));
+
         res.status(200).json({
           success: true,
           data: user,
@@ -191,8 +198,6 @@ const userController = {
           error: err.message,
         });
       })
-
-
       
     }
   },
@@ -236,8 +241,12 @@ const userController = {
               }
           }
 
-          await newUser.save().then(() => {
+          await newUser.save().then((user) => {
             helperFunc.status(res, true, newUser, "add user success");
+
+            const message = `add user ${user.name} successfully`
+            messageQueue('admin_notify', message)
+
           });
         }
       });
@@ -252,8 +261,6 @@ const userController = {
           error: err.message,
         });
       })
-
-      
 
      
     }
@@ -314,11 +321,16 @@ const userController = {
             "http://localhost:8000/api/verify/account/" + fullTokenActivate;
           console.log("URL", URL);
           const content = `Click <a href = "${URL}" > here  </a> to activate your account`;
-
+            let Iuser
           if (!newUser.role) {
             Iuser = await Userrole.findOne({
               name: "user"
             });
+            if(!Iuser){
+              Iuser = await new Userrole({
+                name: "user"
+              })
+            }
             newUser.role = Iuser._id;
             console.log(newUser);
           }

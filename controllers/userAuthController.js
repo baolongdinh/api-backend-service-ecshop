@@ -31,9 +31,8 @@ function checkPass(req){
 const userAuthController = { 
     loginUser: async (req, res) => {
         try {
-            console.log(req.body)
             const user = await UserAccount.findOne({ email: req.body.email }).populate("role");
-            console.log("@@user", user)
+            
             if (!user) {
                 
                 helperFunc.status_error(res,'did not found any user')

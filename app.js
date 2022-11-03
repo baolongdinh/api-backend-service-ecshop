@@ -17,9 +17,6 @@ const auditLogMiddleware = require("./controllers/auditlog/auditlogMiddleware")
 const errLogger = require("./controllers/auditlog/errLogger")
 const resTime = require("./controllers/auditlog/resTimeLogger")
 
-mongoose.plugin(require('./controllers/auditlog/plugin'))
-
-
 
 
 
@@ -34,51 +31,31 @@ mongoose.connect((process.env.MONGODB_URL),()=>{
     console.log("connected database");
 });
 
-  // app.use(bodyParser.json())
-  // app.use(bodyParser.urlencoded({extended: true}))
-  // app.use(express.urlencoded({ extended: true }));
-  // app.use(express.json());
+
+ app.use(bodyParser.json());
+ app.use(bodyParser.urlencoded({ extended: true }));
 
 
-app.use(bodyParser.json());
-//app.use(formData.parse());
-//app.use(formidable());
-//app.use(forms.array()); 
-//app.use(bodyParser.urlencoded());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// app.use(session({secret: 'ilovescodetheworld'})); // chuối bí mật đã mã hóa coookie
-// app.use(passport.initialize());
-// app.use(passport.session()); // persistent login sessions
-// app.use(flash()); // use connect-flash for flash messages stored in session
-
-// app.use(auditLogMiddleware)
-
-// const process_server = (request, response) => {
-//   setTimeout(() => {
-//     response.end();
-//   }, 100);
-// };
 
 //Loki
-app.use(responseTime(resTime))
-app.use(errLogger)
+ app.use(responseTime(resTime))
+ app.use(errLogger)
 
 
-// app.use(cookieParser());
+// // app.use(cookieParser());
 
 
 
-//Static files
-app.use(express.static(__dirname + '/public'));
+// //Static files
+ app.use(express.static(__dirname + '/public'));
 
-// cau hinh engine ejs
-// app.set("view engine", "ejs");
-// app.set("views","./view");
+// // cau hinh engine ejs
+// // app.set("view engine", "ejs");
+// // app.set("views","./view");
 
-app.use('/static', express.static('public'))
+ app.use('/static', express.static('public'))
 
-app.use(cors());
+ app.use(cors());
 
 
 function logFilename(time) {
